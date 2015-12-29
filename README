@@ -2,6 +2,12 @@ r2upnpav
 
 Remote (via infrared and/or HDMI CEC transport) to UPnP AV protocol adapter
 
+See makefile for requirements and building.
+See install.* scripts for example installations.
+install.archlinux was used for an HDMI-CEC archlinux based adapter.
+install.ubuntu was used for an infrared ubuntu based adapter
+which was converted to fedora (and installed with install.fedora).
+
 See embedded man page (./r2upnpav --man) for details,
 from which the following was extracted:
 

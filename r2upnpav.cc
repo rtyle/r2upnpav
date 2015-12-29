@@ -1,5 +1,5 @@
 /// \file
-/// \brief Definition of ir2upnpav program
+/// \brief Definition of r2upnpav program
 
 #include <cstdarg>
 #include <iostream>
@@ -1148,8 +1148,6 @@ int main(int argc, char ** argv) {
 	    ? variablesMap[timeoutOption].as<unsigned int>()
 	    : timeoutDefault);
 	size_t verbose = variablesMap.count(verboseOption);
-
-	g_type_init();
 
 	boost::shared_ptr<GMainLoop> loop(
 	    g_main_loop_new(0, true),

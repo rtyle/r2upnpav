@@ -1,0 +1,28 @@
+#!/bin/bash
+
+s=r2upnpav
+d=$(dirname $0)
+
+# selinux
+cat <<EOF | (cd /tmp; audit2allow -M $s >/dev/null)
+avc: denied { write } comm="lircd" name="protocols" dev="sysfs" scontext=system_u:system_r:lircd_t:s0 tcontext=system_u:object_r:sysfs_t:s0 tclass=file
+avc: denied { dac_override } comm="lircd" capability=1 scontext=system_u:system_r:lircd_t:s0 tcontext=system_u:system_r:lircd_t:s0 tclass=capability
+EOF
+semodule -i /tmp/$s.pp
+
+install -o root -o root -m 755 $d/$s		/usr/local/bin/
+
+# create systemd r2upnpav.service unit, enable and start it
+install -o root -o root -m 644 <(cat <<EOF
+[Unit]
+Description=Remote command to UPnP AV operation
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/$s -i enp4s0 -c- --renderer=(?i)bedroom.*\ssonos\s.*
+
+[Install]
+WantedBy=multi-user.target
+EOF) /usr/lib/systemd/system/r2upnpav.service
+systemctl enable $s.service
+systemctl start  $s.service
