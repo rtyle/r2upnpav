@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# install as an upstart job but order dependent on SysV service
+
+S=lirc
+s=r2upnpav
+d=$(dirname $0)
+
+install -o root -o root -m 755 $d/$s		/usr/local/bin/
+install -o root -o root -m 644 $d/${S}rc	/etc/$S/
+install -o root -o root -m 644 $d/${S}d.conf	/etc/$S/
+
+install -o root -o root -m 644 <(cat <<EOF
+description "Remote command to UPnP AV operation"
+respawn
+exec /usr/local/bin/$s \$(cat /etc/default/$s)
+EOF) /etc/init/$s.conf
+
+install -o root -o root -m 755 <(cat <<EOF
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:		$s
+# Required-Start:	$S
+# Required-Stop:	$S
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+### END INIT INFO
+
+exec service $s "\$@"
+EOF) /etc/init.d/$s
+
+chkconfig --add $s
+
+install -o root -g root -m 644 <(cat <<EOF
+-c- --renderer=(?i)bedroom.*\ssonos\s.*
+EOF) /etc/default/$s

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+s=r2upnpav
+d=$(dirname $0)
+
+install -o root -o root -m 755 $d/$s		/usr/local/bin/
+
+# create systemd r2upnpav.service unit, enable and start it
+install -o root -o root -m 644 <(cat <<EOF
+[Unit]
+Description=Remote command to UPnP AV operation
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/env LD_LIBRARY_PATH=/opt/vc/lib /usr/local/bin/$s -l- --renderer=(?i)living.*\ssonos\s.*
+
+[Install]
+WantedBy=multi-user.target
+EOF) /usr/lib/systemd/system/r2upnpav.service
+systemctl enable $s.service
+systemctl start  $s.service

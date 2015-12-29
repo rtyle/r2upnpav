@@ -1,0 +1,120 @@
+r2upnpav
+
+Remote (via infrared and/or HDMI CEC transport) to UPnP AV protocol adapter
+
+See embedded man page (./r2upnpav --man) for details,
+from which the following was extracted:
+
+NAME
+       r2upnpav - Remote to UPnP AV protocol adapter
+
+SYNOPSIS
+       r2upnpav [Option]...
+
+DESCRIPTION
+	Convert remote control codes
+	relayed from a HDMI Consumer Electronics Control (CEC) equipment or
+	received from the Linux Infrared Remote Control (LIRC) daemon (lircd)
+	(and adapted by program specific LIRC Run Commands (lircrc))
+	to Universal Plug and Play (UPnP) Audio/Video (AV) device operations.
+
+	A libcec compatible HDMI CEC protocol adapter must be installed
+	to relay remote/button codes from your remote.
+	Specify --cec=- if there is no such input.
+
+	The LIRC daemon (lircd) must be configured (and running)
+	to receive remote/button codes for your remote.
+	These remote/button codes must then be adapted/configured
+	(by way of a lircrc file specified on the command line
+	or found in one of the default locations)
+	to operations supported by this program (r2upnpav).
+	Specify --lircrc=- if there is no such input.
+
+	The UPnP media renderer device(s) to be targeted by each operation
+	are specified as those whose friendly names
+	match a renderer regular expression pattern.
+
+	Use the verbose program option to trace program operations.
+	This includes UPnP device discovery with device friendly names
+	reported for all available devices.
+	Once these names are known, one should be able to specify a pattern
+	to match only the device(s) of interest.
+	If nothing is discovered, make sure the correct network interface
+	is chosen and that UPnP network protocols are not firewalled.
+	With use with a firewall, a rule to allow traffic from the local
+	network to the specified UPnP TCP SOAP server port should be added.
+	Unfortunately, for UPnP discovery, an ephemeral UDP port is used.
+	Since this port cannot be known/specified in advance, the firewall
+	must allow all UDP incoming traffic to the ephemeral port range.
+
+Options:
+  -h [ --help ]          Print options usage.
+  -m [ --man ]           Print man(ual) page.
+  -c [ --cec ] arg       CEC adapter com port (see cec-client -l output) 
+                         (default: ); "" => default, "-" => no CEC input.
+  -i [ --interface ] arg UPnP network (default: first non LOOPBACK interface).
+  -l [ --lircrc ] arg    lircrc file (default: ); "" => default, "-" => no lirc
+                         input.
+  -n [ --name ] arg      CEC OSD name (default: r2upnpav).
+  -p [ --program ] arg   lircrc program tag (default: r2upnpav).
+  -r [ --renderer ] arg  renderer pattern (default: (?i).*\s-\ssonos\s.*).
+  -s [ --server ] arg    UPnP TCP SOAP server port (default: 0); 0 => any 
+                         port).
+  -t [ --timeout ] arg   CEC connection timeout in milliseconds (default: 
+                         10000).
+  -v [ --verbose ]       Print trace messages.
+
+LIRCRC EXAMPLES
+	The following lircrc file maps typical (standard, irrecord named)
+	lircd (remote/button) codes to supported (config'ed)
+	program (r2upnpav) operations:
+		begin
+			prog	= r2upnpav
+			button	= KEY_PAUSE
+			config	= Pause
+			repeat	= 0
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_PLAY
+			config	= Play
+			repeat	= 0
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_REWIND
+			config	= Previous
+			repeat	= 0
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_FASTFORWARD
+			config	= Next
+			repeat	= 0
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_MUTE
+			config	= Mute
+			repeat	= 0
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_VOLUMEUP
+			config	= VolumeUp
+			repeat	= 1
+		end
+		begin
+			prog	= r2upnpav
+			button	= KEY_VOLUMEDOWN
+			config	= VolumeDown
+		 	repeat	= 1
+		end
+
+SEE ALSO
+	cec-client
+	irrecord(1)
+	irw(1)
+	lircd(8)
+	gupnp-av-cp
+	gupnp-universal-cp

@@ -1,0 +1,42 @@
+begin
+	prog	= r2upnpav
+	button	= KEY_PAUSE
+	config	= Pause
+	repeat	= 0
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_PLAY
+	config	= Play
+	repeat	= 0
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_REWIND
+	config	= Previous
+	repeat	= 0
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_FASTFORWARD
+	config	= Next
+	repeat	= 0
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_MUTE
+	config	= Mute
+	repeat	= 0
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_VOLUMEUP
+	config	= VolumeUp
+	repeat	= 1
+end
+begin
+	prog	= r2upnpav
+	button	= KEY_VOLUMEDOWN
+	config	= VolumeDown
+	repeat	= 1
+end
