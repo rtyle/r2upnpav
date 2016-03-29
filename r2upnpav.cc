@@ -749,7 +749,7 @@ private:
 	    {
 		callbackParam = cecInput;
 		callbacks = &cecInputCallbacks;
-		clientVersion = CEC::CEC_CLIENT_VERSION_CURRENT;
+		clientVersion = CEC::LIBCEC_VERSION_CURRENT;
 		strncpy(strDeviceName, name, sizeof(strDeviceName) - 1);
 		deviceTypes.Add(CEC::CEC_DEVICE_TYPE_AUDIO_SYSTEM);
 		bActivateSource = 0;
